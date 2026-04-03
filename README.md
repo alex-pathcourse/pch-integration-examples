@@ -1,6 +1,6 @@
 # PCH Integration Examples
 
-**[gateway.pathcoursehealth.com](https://gateway.pathcoursehealth.com)** | [Developer Docs](https://gateway.pathcoursehealth.com/docs) | [Agent Card](https://gateway.pathcoursehealth.com/.well-known/agent.json)
+**[gateway.pathcoursehealth.com](https://gateway.pathcoursehealth.com)** | [Developer Docs](https://gateway.pathcoursehealth.com/docs) | [MCP Server](https://gateway.pathcoursehealth.com/mcp) | [Agent Card](https://gateway.pathcoursehealth.com/.well-known/agent.json)
 
 LLM inference for autonomous AI agents. Pay USDC on Base, get an API key, start making requests. No accounts, no signups.
 
@@ -91,7 +91,51 @@ The `X-PAYMENT-PROOF` header accepts base64-encoded JSON or plain JSON:
 
 ---
 
-## Full Integration Examples
+## MCP Integration (Model Context Protocol)
+
+Agents with MCP support can use PCH through native tool calls — no REST API needed.
+
+**MCP Endpoint:** `https://gateway.pathcoursehealth.com/mcp`
+
+### Available Tools
+
+| Tool | Auth Required | Description |
+|------|---------------|-------------|
+| `pch_models` | No | List all models with pricing, tiers, and descriptions |
+| `pch_status` | No | Check gateway health and service status |
+| `pch_provision` | No | Get treasury wallet, payment steps, and tier breakdown |
+| `pch_estimate` | No | Estimate cost before running (model + token count) |
+| `pch_pay` | No | Submit payment proof after sending USDC — returns API key + first inference |
+| `pch_inference` | Yes | Run inference on any PCH model |
+| `pch_balance` | Yes | Check remaining USDC balance and tier |
+
+### Full MCP Flow (Zero REST API Calls)
+
+```
+1. pch_models()                                        → browse models + pricing
+2. pch_estimate(model: "pch-fast", estimated_tokens: 50000) → "$0.022 estimated"
+3. pch_provision(deposit_usdc: 25)                     → treasury wallet + payment steps
+4. ... agent sends $25 USDC on Base ...
+5. pch_pay(payment_context_id, tx_hash, buyer_wallet)  → API key + first inference
+6. pch_inference(model: "pch-fast", prompt: "...", api_key: "pch_prod_b_...") → response
+7. pch_balance(api_key: "pch_prod_b_...")              → remaining balance
+```
+
+### Supported Frameworks
+
+| Framework | MCP Support |
+|-----------|-------------|
+| Claude Code / Claude Desktop | Native |
+| Cursor / Windsurf | Native |
+| LangChain | Via MCP adapter |
+| CrewAI | Via MCP adapter |
+| Custom agents | Implement MCP client |
+
+Agents without MCP support use the REST API — both paths lead to the same models, billing, and infrastructure.
+
+---
+
+## Full Integration Examples (REST API)
 
 For the complete flow (discovery, payment, provisioning, and ongoing usage):
 
@@ -129,6 +173,7 @@ Every inference response includes:
 ## Links
 
 - **Gateway:** [gateway.pathcoursehealth.com](https://gateway.pathcoursehealth.com)
+- **MCP Server:** [/mcp](https://gateway.pathcoursehealth.com/mcp)
 - **Developer Docs (JSON):** [/docs](https://gateway.pathcoursehealth.com/docs)
 - **Agent Card:** [/.well-known/agent.json](https://gateway.pathcoursehealth.com/.well-known/agent.json)
 - **Capabilities:** [/registry/capabilities](https://agents.pathcoursehealth.com/registry/capabilities)
