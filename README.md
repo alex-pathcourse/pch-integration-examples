@@ -44,13 +44,25 @@ Don't have an API key yet? Send $25 USDC on Base to the gateway and get one auto
 
 ## Available Models
 
-| Model | Rate (per million tokens) | Tier Required | Best For |
-|-------|--------------------------|---------------|----------|
-| pch-fast | $0.44 | Uncertified+ | High-volume, low-complexity tasks -- classification, summarization, routing decisions, quick agent responses |
-| pch-coder | $3.50 | Uncertified+ | Agentic coding tasks, repository-scale code generation, function calling, browser automation, debugging |
-| pch-pro | $1.96 | Bronze+ | General-purpose autonomous agent reasoning, multi-step planning, tool use, production workloads |
-| claude-haiku | Common rate | Silver+ | Balanced instruction following at higher quality |
-| claude-sonnet | Common rate | Gold+ | Long-context reasoning, nuanced analysis, vision |
+### Text Inference
+
+| Model | Rate | Tier | Latency | Best For |
+|-------|------|------|---------|----------|
+| pch-fast | $0.44/M tokens | Uncertified+ | 400-800ms | High-volume, low-complexity tasks -- classification, summarization, routing decisions, quick agent responses |
+| pch-coder | $3.50/M tokens | Uncertified+ | 1000-3000ms | Agentic coding tasks, repository-scale code generation, function calling, browser automation, debugging |
+| pch-pro | $1.96/M tokens | Bronze+ | 800-2000ms | General-purpose autonomous agent reasoning, multi-step planning, tool use, production workloads |
+| claude-haiku | Common rate | Silver+ | varies | Balanced instruction following at higher quality |
+| claude-sonnet | Common rate | Gold+ | varies | Long-context reasoning, nuanced analysis, vision |
+
+### Image, Audio, Documents & Voice
+
+| Model | Rate | Tier | Latency | Best For |
+|-------|------|------|---------|----------|
+| pch-image | $0.028/image | Silver+ | 500-1200ms | Text-to-image generation. Sub-second at 1024x1024. Supports text-to-image and image editing. |
+| pch-audio | $1.85/M chars | Bronze+ | 150-200ms | Text-to-speech, standard. <200ms first audio. Emotion tags and zero-shot voice cloning. |
+| pch-audio-premium | $37.00/M chars | Silver+ | 97-150ms | Text-to-speech, premium. 97ms first-byte. 10-language support, voice cloning, emotion control. |
+| pch-documents | $0.26 in / $1.48 out per M tokens | Bronze+ | 800-2000ms/page | Document parsing and OCR. 109 languages, tables, formulas, charts. |
+| pch-talk | $0.001/minute | Silver+ | 1500-4000ms | End-to-end voice conversation. Audio in, audio out. One endpoint, one billing event. |
 
 PCH model tiers are powered by third-party inference infrastructure. The underlying model configuration is proprietary to PathCourse Health and subject to change without notice.
 
@@ -59,9 +71,18 @@ PCH model tiers are powered by third-party inference infrastructure. The underly
 | Tier | Deposit (USDC) | Models Unlocked |
 |------|---------------|-----------------|
 | Uncertified | $25 | pch-fast, pch-coder |
-| Bronze | $75 | + pch-pro |
-| Silver | $250 | + claude-haiku |
+| Bronze | $75 | + pch-pro, pch-audio, pch-documents |
+| Silver | $250 | + pch-image, pch-audio-premium, pch-talk, claude-haiku |
 | Gold | $750 | + claude-sonnet |
+
+### Additional Endpoints
+
+| Endpoint | Model | Method |
+|----------|-------|--------|
+| `/v1/chat/completions` | pch-fast, pch-coder, pch-pro, pch-documents, claude-haiku, claude-sonnet | POST |
+| `/v1/images/generations` | pch-image | POST |
+| `/v1/audio/speech` | pch-audio, pch-audio-premium | POST |
+| `/v1/audio/conversation` | pch-talk | POST |
 
 ---
 
