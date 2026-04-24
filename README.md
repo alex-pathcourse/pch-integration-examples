@@ -176,6 +176,51 @@ node javascript/pch_client.js
 ```
 
 ---
+## SDK Examples
+
+The official SDKs wrap the REST API with typed methods, automatic retries, and built-in error classes.
+
+```bash
+pip install pathcourse-sdk        # Python
+npm install @pathcourse/sdk       # Node.js
+```
+
+### Quick Start & Key Claiming
+
+| File | Description |
+|------|-------------|
+| [python/sdk_quick_start.py](python/sdk_quick_start.py) | Claim a key, verify it, run inference, self-profile |
+| [javascript/sdk_quick_start.js](javascript/sdk_quick_start.js) | Same flow in Node.js |
+
+### 1. Memory — Persistent Embedding Store
+
+| File | Description |
+|------|-------------|
+| [python/memory_example.py](python/memory_example.py) | Store, retrieve, update, forget, summarize |
+| [javascript/memory_example.js](javascript/memory_example.js) | Same in Node.js |
+
+### 2. Identity & Reputation — Path Score & ERC-8004
+
+| File | Description |
+|------|-------------|
+| [python/reputation_example.py](python/reputation_example.py) | Path Score lookup, trust check, score history, ERC-8004 identity |
+| [javascript/reputation_example.js](javascript/reputation_example.js) | Same in Node.js |
+
+### 3. Observability — Traces, Spans, Cost Attribution
+
+| File | Description |
+|------|-------------|
+| [python/observability_example.py](python/observability_example.py) | Trace lifecycle, event logging, analytics, cost attribution |
+| [javascript/observability_example.js](javascript/observability_example.js) | Same in Node.js |
+
+### 4. Account Controls — Balance, Budget, Webhooks
+
+| File | Description |
+|------|-------------|
+| [python/account_controls.py](python/account_controls.py) | Balance, usage history, runway, budget cap, webhook registration |
+| [javascript/account_controls.js](javascript/account_controls.js) | Same in Node.js |
+
+---
 
 ## Response Headers
 
